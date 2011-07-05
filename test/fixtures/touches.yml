@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  notes: MyText
+  at: 2011-06-05 11:24:48
+  campaign: 
+  store: 
+  employee: 
+
+two:
+  notes: MyText
+  at: 2011-06-05 11:24:48
+  campaign: 
+  store: 
+  employee: 

@@ -1,0 +1,54 @@
+<script type="text/javascript">
+  jQuery(function($){
+    $('.hoverable tr').hover(function(e){
+        $(this).addClass('hover');
+      }, function(e){
+        $(this).removeClass('hover');
+    });
+      
+    $('[name="store_name"]').focus();
+
+  });
+</script>
+
+<script type="text/javascript">
+//makes a case insensitive version of :contains.
+jQuery.expr[':'].Contains = function(a, i, m) {
+  return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
+
+jQuery(function($) {
+  //bind to the inputs to call the filter function
+  $('input').keyup(filter_function).change(filter_function);
+
+  function filter_function(e){
+    $alreadyHidden = $('tr:not(:visible)');
+    var $rowsToFadeOut = $('input').map(function(i, ele){
+      return $('.'+ $(ele).attr('id')).not("td:Contains('" + $(ele).val() + "')").parent('tr').fadeOut();
+    });
+    var rowsHidden = 0;
+    $.each($rowsToFadeOut, function(i, $set){
+      $alreadyHidden = $alreadyHidden.not($set); 
+      rowsHidden = rowsHidden + $set.size();
+    });
+    $alreadyHidden.show();
+    if(rowsHidden == $('#all-stores tr:not(tr:has(th))').size()){$('#no-results').fadeIn();}else{$('#no-results').fadeOut();}
+  }
+});
+</script>
+
+<script type="text/javascript">
+jQuery(function($) {
+  //fill all inputs from cookies
+  $('input[type="text"]').each(function(i){
+    $(this).val($.cookie($(this).attr('id')));
+    if($(this).val().length > 0){ $(this).change(); }
+  });
+
+  //bind to the inputs to call the set the cookie
+  $('input').keyup(setCookie).change(setCookie);
+  function setCookie(e){
+    $.cookie($(this).attr('id'), $(this).val());
+  }
+});
+</script>

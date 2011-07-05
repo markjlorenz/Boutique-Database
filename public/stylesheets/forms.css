@@ -1,0 +1,32 @@
+div.field.inline{
+  display:inline-block;
+}
+input.datepicker{
+  width:8em;
+}
+
+textarea{
+  border:none;
+   height:5em;
+   box-shadow:inset 0px 0px 5px #000000;
+}
+label+br+input,label+br+select, label+br+textarea,label+br+div.contact-field,label+div.indented{
+  margin-left:2em;
+}
+input[type='text'], textarea, input[type='tel'], input[type='email']{
+  padding-left:1em;
+  border-radius: 5px;
+  font-size:120%;
+}
+input[type='tel']{
+  width:10em;
+}
+span.destroy{
+  white-space:nowrap;
+  padding:0.25em;
+  border-radius: 5px;
+  box-shadow:inset 0px 0px 2px #000000;
+}
+span.destroy .ui-icon{
+  display:inline-block;
+}

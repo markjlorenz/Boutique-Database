@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Notes:</b>
+  <%= @touch.notes %>
+</p>
+
+<p>
+  <b>At:</b>
+  <%= @touch.at %>
+</p>
+
+<p>
+  <b>Campaign:</b>
+  <%= @touch.campaign %>
+</p>
+
+<p>
+  <b>Store:</b>
+  <%= @touch.store %>
+</p>
+
+<p>
+  <b>Employee:</b>
+  <%= @touch.employee %>
+</p>
+
+
+<%= link_to 'Edit', edit_touch_path(@touch) %> |
+<%= link_to 'Back', touches_path %>

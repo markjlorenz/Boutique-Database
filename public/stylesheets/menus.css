@@ -1,0 +1,40 @@
+ul.news-menu{
+  display: inline;
+  position:absolute;
+  right:1em;
+  top: 1em;
+}
+ul.news-menu>li{
+  display: inline;
+}
+
+ul.show-navigation{
+  display: inline;
+  position:absolute;
+  right:1em;
+  top: 1em;
+}
+
+ul.show-navigation>li{
+  display: inline;
+}
+
+ul.news-menu>li:first-child:before, ul.show-navigation>li:first-child:before{
+  content:"[ ";
+}
+ul.news-menu>li:last-child:after, ul.show-navigation>li:last-child:after{
+  content:" ]";
+}
+ul.news-menu>li:not(:last-child):after, ul.show-navigation>li:not(:last-child):after{
+  content:" - ";
+}
+
+ul.touch-campaigns{
+  display:none;
+}
+ul.touch-campaigns>li.touched{
+  list-style-image:url("/images/ui-icon-check.png");
+}
+ul.touch-campaigns>li.untouched{
+  list-style-image:url("/images/ui-icon-radio-on.png");
+}

@@ -1,0 +1,4 @@
+Jackueline Exclusive:
+All Stores within 300 mile radius is max achievable
+curl -d "zipcode=43065&country=us&radius=300" http://jacquelinexclusive.com/locator/index.php
+

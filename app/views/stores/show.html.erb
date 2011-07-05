@@ -1,0 +1,86 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @store.name %></h1>
+<p>
+  <b>Phone:</b>
+  <%= @store.phone %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @store.address %>
+</p>
+
+<div class='indent'>
+  <b>Employees:</b>
+  <% @store.employees.each do |employee| %>
+    <div itemscope itemtype="http://schema.org/Person">
+      <span itemprop="name"><%= employee.name %></span>
+      <!--<img src="janedoe.jpg" itemprop="image" />-->
+
+      <!--<span itemprop="jobTitle">Professor</span>-->
+      <% employee.contacts.each do |contact| %>
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+          <span><%= contact.postal %></span>
+          <!--<span itemprop="streetAddress">
+            20341 Whitworth Institute
+            405 N. Whitworth
+          </span>
+          <span itemprop="addressLocality">Seattle</span>,
+          <span itemprop="addressRegion">WA</span>
+          <span itemprop="postalCode">98052</span>-->
+        </div>
+        <span itemprop="telephone"><%= contact.phone %></span>
+        <a href="mailto:<%= contact.email %>" itemprop="email"><%= contact.email %></a>
+      <% end %>
+      <!--Jane's home page:
+      <a href="www.janedoe.com" itemprop="url">janedoe.com</a>
+
+      Graduate students:
+      <a href="www.xyz.edu/students/alicejones.html" itemprop="colleagues">
+        Alice Jones</a>
+      <a href="www.xyz.edu/students/bobsmith.html" itemprop="colleagues">
+        Bob Smith</a>-->
+    </div>
+  <% end %>
+</div>
+
+<p>
+  <b>Notes:</b>
+  <%= @store.notes %>
+</p>
+
+<p>
+  <b>Designers:</b>
+  <span>
+    <%= @store.designers.map(&:name).join(', ')%>
+  </span>
+</p>
+
+<div class='table-container'>
+  <h3>Contacted:</h3>
+  <table class='store-contacted'>
+    <tr>
+      <th>Campaign</th>
+      <th>Who</th>
+      <th>Notes</th>
+      <th>Date</th>
+    </tr>
+    <% @store.touches.each do |touch| %>  
+    <tr>
+      <td><%= touch.campaign.name %></td>
+      <td><%= touch.employee.name unless touch.employee.nil? %></td>
+      <td><%= touch.notes %></td>
+      <td class='date'><%= format_date(touch.at) %></td>
+    </tr>
+    <% end %>
+  </table>
+  <% if @store.touches.empty? %>
+    <div class='ui-state-highlight ui-corner-all ui-notice-container'><span class='ui-icon ui-icon-info ui-before-text'></span><%= @store.name %> hasn't been contacted</div>
+  <% end %>
+</div>
+
+<ul class='show-navigation'>
+  <li><%= link_to 'Edit', edit_store_path(@store) %></li>
+  <li><%= link_to 'Home', stores_path %></li>
+</ul>

@@ -1,0 +1,12 @@
+#searchable-inputs td span{
+  position:absolute; 
+  margin-left:0.25em;
+}
+#searchable-inputs{
+  width:100%;
+}
+#searchable-inputs td input{
+  padding-left:1em;
+  border-radius: 5px;
+  font-size:120%;
+}

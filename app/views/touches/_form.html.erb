@@ -1,0 +1,84 @@
+<script type="text/javascript">
+jQuery(function($){
+    $('#find-or-create').findOrCreate({
+      inputAttributes:[{'type':'text', 'placeholder':'Employee', 'tabindex':'1'}],
+      $findField:$('#touch_employee_id'), 
+      $createField:$('#touch_employee_attributes_name'), 
+      $secondaryCreateFields:$('[name*="[contacts_attributes]"]'),
+      autocompleteOptions:{'minLength': 0},
+      //debug:true,
+      source: <%= @store_employees.to_json(only:[], methods:[:key, :value]).html_safe %>
+    });
+
+    $('[name="touch[store_id]"]').change(function(e){
+      var self = this;
+      var $findOrCreate = $('#find-or-create');
+      $findOrCreate.findOrCreate('targetInput').loadingOverlay('show');
+
+      //blow away an current values in #find-or-create
+      $findOrCreate.findOrCreate('inputFields').val('');
+      
+      //fetch a new list of employees
+      var template_path = '<%= store_employees_path(0) %>';
+      var employees = $.get(template_path.replace(/\/0\//, '/'+$(this).val()+'/'), function(data, textStatus, xhr){
+        $findOrCreate.findOrCreate('option', 'source', data);
+        $findOrCreate.findOrCreate('targetInput').loadingOverlay('hide');
+      }, 'json');   
+    });
+});
+</script>
+<%= form_for(@touch) do |f| %>
+  <% if @touch.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@touch.errors.count, "error") %> prohibited this touch from being saved:</h2>
+
+      <ul>
+      <% @touch.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%#= f.label :at %><br />
+    <%= f.text_field :at, class:"datepicker", placeholder:'At' %>
+  </div>
+  <div class="field inline">
+    <%= f.label :campaign %><br />
+    <%= f.collection_select :campaign_id, @all_campaigns, :id, :name, {prompt:'-Choose Campaign'} %>
+    <%#= f.text_field :campaign %>
+  </div>
+  <div class="field inline">
+    <%= f.label :store %><br />
+    <%= f.collection_select :store_id, @all_stores, :id, :name, {prompt:'-Choose Store'} %>
+    <%#= f.text_field :store %>
+  </div>
+
+  <div id="find-or-create">
+    <div class="field">
+      <!--<%= f.label :employee_id %><br />-->
+      <%= f.text_field :employee_id, placeholder:'Employee ID' %>
+    </div>
+    <%= f.fields_for :employee do |f| %>
+      <div class="field">
+        <!--<%= f.label :name %><br />-->
+        <%= f.text_field :name, placeholder:'Employee Name' %>
+        <%= f.fields_for :contacts do |f| %>
+          <%= f.text_field :email, placeholder:'Email' %>
+          <%= f.text_field :postal, placeholder:'Postal' %>
+          <%= f.text_field :phone, placeholder:'Phone' %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%#= f.label :notes %><br />
+    <%= f.text_area :notes, placeholder:'Notes', tabindex:'2' %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

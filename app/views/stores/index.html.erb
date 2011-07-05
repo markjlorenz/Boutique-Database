@@ -1,0 +1,62 @@
+<%= render 'index_scripts' %>
+
+<%= render 'flash_notice' %>
+
+<h1>Prospects</h1>
+
+<ul class='news-menu'>
+  <li><%= link_to 'New Store', new_store_path %></li> 
+  <li><%= link_to 'New Campaign', new_campaign_path %></li>
+</ul>
+<!--<div style="display:table; margin: 0 auto;">-->
+  <%= form_tag stores_path, :method=>'get' do %>
+  <table id="searchable-inputs" class="ui-widget spreadsheet">
+    <tr>
+      <td><span class="ui-widget ui-icon ui-icon-search"></span> <%= text_field_tag :store_name, '', placeholder:'Name'%></td>
+      <td><span class="ui-widget ui-icon ui-icon-search"></span> <%= text_field_tag :store_designers, '', placeholder:'Tag' %></td>
+      <td><span class="ui-widget ui-icon ui-icon-search"></span> <%= text_field_tag :store_phone, '', placeholder:'Phone Number' %> </td>
+      <td><span class="ui-widget ui-icon ui-icon-search"></span> <%= text_field_tag :store_address, '', placeholder:'Address' %> </td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  <% end %>
+<!--</div>-->
+
+
+<table id='all-stores' class='hoverable'>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Tags</th>
+    <th>Phone</th>
+    <th>Address</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @stores.each do |store| %>
+  <tr>
+    <td class='store_id'><%= store.id %></td>
+    <td class='store_name'><%= store.name %></td>
+    <td class='store_designers'><%= store.designers.map(&:name).join ', '%></td>
+    <td class='store_phone'><%= store.phone %></td>
+    <td class='store_address'><%= store.address %></td>
+    <td class='contact'>
+      <!--the white-space:nowrap dispaly:table and float:right feel like hacks, so they will stay inline -->
+      <%= link_to 'Touch', new_touch_path(touch:{store_id:store})%><%= link_to '#expand-contact' do%><span class='ui-icon ui-icon-arrowreturn-1-s' style='float:right; display:table;'></span>&nbsp <%end%>
+      <ul class='touch-campaigns'>
+        <% @all_campaigns.each do |campaign| %>
+        <li class='<%= store.campaign_touched?(campaign) ? "touched" : "untouched" %>'><%= link_to campaign.name, new_touch_path(touch:{store_id:store, campaign_id:campaign}) %></li>
+        <% end %>
+      </ul>
+    </td>
+    <td class='show'><%= link_to 'Show', store_path(store) %></td>
+    <td class='destroy'><%= link_to store, :confirm => 'Are you sure?', :method => :delete do%> <span class='ui-icon ui-icon-trash'></span> <%end%></td>
+  </tr>
+<% end %>
+</table>
+
+<div id ='no-results' class='ui-state-highlight ui-corner-all ui-notice-container' style='display:none;'><span class='ui-icon ui-icon-info ui-before-text'></span>No matching stores found</div>

@@ -1,0 +1,149 @@
+<script type="text/javascript">
+jQuery(function($){
+    findOrCreate();
+});
+    function findOrCreate(){
+      var $ = jQuery;
+      $('.find-or-create.designers').findOrCreate({
+        inputAttributes:[{'type':'text', 'placeholder':'Designer'}],
+        $findField:$('[name*="designers_stores_attributes"][name$="[designer_id]"]'), 
+        $createField:$('[name*="designers_stores_attributes"][name*="designer_attributes"][name$="[name]"]'), 
+        $before:$('.find-or-create.designers span.destroy'), 
+        autocompleteOptions:{'minLength': 0},
+        //debug:true,
+        source: <%= @all_designers.to_json(only:[], methods:[:key, :value]).html_safe %>
+      });
+    }
+</script>
+
+<%= form_for(@store) do |f| %>
+  <% if @store.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store.errors.count, "error") %> prohibited this store from being saved:</h2>
+
+      <ul>
+      <% @store.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+  </div>
+
+  <%= label :employees, "Employees" %>
+  <div class="indented employees">
+    <%= f.fields_for :employees do |f| %>
+      <div class="field" addable="employee">
+        <%= f.text_field :name, placeholder:'Employee Name', class:'addable-anchor' %>
+        <%= f.fields_for :contacts do |f| %>
+          <%= f.text_field :email, placeholder:'Email', type:'email' %>
+          <%= f.text_field :postal, placeholder:'Postal' %>
+          <%= f.text_field :phone, placeholder:'Phone', type:'tel' %>
+        <% end %>
+        <span class='destroy'>
+          <%= f.check_box :_destroy %><span class='ui-icon ui-icon-trash'></span>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </div>
+  <!--<%= f.fields_for :designers_stores do |f| %>
+    <div class="field">
+      <%= f.label :designer_id %><br />
+      <%= f.text_field :designer_id %>
+    </div>
+    <% end %> -->
+
+  <%= label :designers, "Designers" %>
+  <div class="indented">
+    <%= f.fields_for :designers_stores do |f| %>
+      <div class='find-or-create designers'>
+        <div class="field">
+          <%= f.text_field :designer_id, placeholder:'Designer ID' %>
+        </div>
+        <%= f.fields_for :designer do |f| %>
+          <div class="field">
+            <%= f.text_field :name, placeholder:'Designer Name' %>
+          </div>
+        <% end %>
+        <span class='destroy'>
+          <%= f.check_box :_destroy %><span class='ui-icon ui-icon-trash'></span>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <script type="text/javascript"> 
+    var $ = jQuery;
+    function add_fields($prototype, $after, callBack) {  
+      var callBack = typeof(callBack) != 'undefined' ? callBack : function(){;};
+      var new_id = new Date().getTime();  
+      var regexp = new RegExp(/\[[0-9]+\]/g);  
+      var $callback = $();
+      if($after){
+        $callback = $($prototype.html().replace(regexp, new_id)).insertAfter($after); 
+      }else{
+        $callback = $($prototype.html().replace(regexp, new_id)).insertBefore($prototype); 
+      }
+      callBack($callback);
+    }
+  </script>
+  
+  <script type="text/javascript">
+    jQuery(function($){
+      $('[addable] .addable-anchor').live('blur', function(e){
+        var count_with_value = 0;
+        var addable_type = $(e.target).closest('[addable]').attr('addable');
+        $('[addable="'+addable_type+'"]').find('.addable-anchor').each(function(i, ele){
+          if($(this).val() != ''){count_with_value++;}
+        });
+        if(count_with_value == $('[addable="'+addable_type+'"] .addable-anchor').size()){
+          add_fields(
+            $('<div/>').append( $('[addable="'+addable_type+'"]').first().clone() ), 
+            $('form [addable]').last(),
+            function($c){$c.find('input').val('');}
+          ); 
+        }
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+    // if a blank findOrCreate exists after a blur, add a new one.
+    jQuery(function($){
+      $(':dbd-findOrCreate').live('blur', function(e){
+        var count_with_value = 0;
+        $(':dbd-findOrCreate').each(function(i, ele){
+          if($(this).findOrCreate('targetInput').val() != ''){count_with_value++;}
+        });
+        if(count_with_value == $(':dbd-findOrCreate').size()){
+          add_fields(
+            $('<div/>').append($('.find-or-create').first().clone().find('.find-or-create-wrapper').remove().end()), 
+            $('form .find-or-create').last(), 
+            function($c){$c.find('input').val(''); findOrCreate();}
+          ); 
+        }
+      });
+    });
+  </script>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

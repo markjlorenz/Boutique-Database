@@ -1,0 +1,9 @@
+.ui-before-text{
+  float:left;
+  margin-right: 0.3em;
+}
+.ui-notice-container{
+  padding:0.7em;
+  display:table;
+  margin: 0 auto;
+}

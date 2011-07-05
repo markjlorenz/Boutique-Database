@@ -1,0 +1,8 @@
+<script type="text/javascript">
+  jQuery(function($){
+    $('#flash-container').flash();
+  });
+</script>
+<div id='flash-container'>
+  <div class='ui-state-highlight ui-corner-all ui-notice-container'><span class='ui-icon ui-icon-info ui-before-text'></span><span class='message'><%= flash.now[:notice] %></span></div>
+</div>

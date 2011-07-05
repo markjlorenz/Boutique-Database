@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BoutiqueDatabase</title>
+  <%= stylesheet_link_tag :all %>
+  <%= javascript_include_tag 'jquery-1.6.1.min.js' %>
+  <%= javascript_include_tag 'rails.js', 'jquery-ui-1.8.13.custom.min' %>
+  <%= javascript_include_tag 'application', 'jquery.flash', 'jquery.find-or-create', 'jquery.loading-overlay', 'jquery.cookie', 'noisy'%>
+  <%= csrf_meta_tag %> 
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

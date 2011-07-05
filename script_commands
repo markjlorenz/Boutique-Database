@@ -1,0 +1,4 @@
+s = Store.create(name:name, address:address, phone:phone); s.designers<<Designer.where(abb:'bm');s.save; name=nil; address=nil; phone=nil;
+Store.where("name LIKE ?", "%#{st}%").map(&:descr)
+s = Store.find 85; s.designers<<Designer.where(abb:'bm'); s.save;
+
