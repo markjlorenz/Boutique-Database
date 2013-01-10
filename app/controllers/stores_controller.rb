@@ -3,13 +3,13 @@ class StoresController < ApplicationController
 
   def index
     @stores = Store.order('LOWER(name)').all
+    @stores = Campaign.find(params[:campaign_id]).stores.order('LOWER(name)').all unless params[:campaign_id].nil?
     @all_campaigns = Campaign.all
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @stores }
     end
   end
-
 
 
   def show
@@ -73,7 +73,8 @@ class StoresController < ApplicationController
 #    raise StandardError
     respond_to do |format|
       if @store.update_attributes(params[:store])
-        format.html { redirect_to(:root, :notice => 'Store was successfully updated.') }
+        #format.html { redirect_to(:root, :notice => 'Store was successfully updated.') }
+        format.html { redirect_to(last_index, :notice => 'Store was successfully updated.') }
         format.xml  { head :ok }
       else
         setup

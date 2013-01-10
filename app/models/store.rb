@@ -8,6 +8,8 @@ class Store < ActiveRecord::Base
   has_many :touches, :dependent=>:destroy
   accepts_nested_attributes_for :touches
 
+  has_many :campaigns, :through=>:touches
+
   has_many :employees, :dependent=>:destroy
   accepts_nested_attributes_for :employees, reject_if:proc{|attrs| reject = %w(name).all?{|a| attrs[a].blank?}}, allow_destroy:true
 

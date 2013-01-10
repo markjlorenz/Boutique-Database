@@ -3,7 +3,11 @@ BoutiqueDatabase::Application.routes.draw do
 
   resources :employees 
 
-  resources :campaigns
+  resources :campaigns do
+    resource :stores do
+      get 'index'
+    end
+  end
 
   resources :designers
 

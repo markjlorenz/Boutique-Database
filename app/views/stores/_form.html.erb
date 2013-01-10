@@ -47,6 +47,7 @@ jQuery(function($){
     <%= f.fields_for :employees do |f| %>
       <div class="field" addable="employee">
         <%= f.text_field :name, placeholder:'Employee Name', class:'addable-anchor' %>
+        <%= f.text_field :job_title, placeholder:'Job Title', class:'' %>
         <%= f.fields_for :contacts do |f| %>
           <%= f.text_field :email, placeholder:'Email', type:'email' %>
           <%= f.text_field :postal, placeholder:'Postal' %>

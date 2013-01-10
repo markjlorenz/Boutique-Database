@@ -21,6 +21,12 @@ input[type='text'], textarea, input[type='tel'], input[type='email']{
 input[type='tel']{
   width:10em;
 }
+input[name$='[job_title]']{
+  width:8em;
+}
+input[name^='store[employees_attributes]'][name$='[name]']{
+  width:10em;
+}
 span.destroy{
   white-space:nowrap;
   padding:0.25em;

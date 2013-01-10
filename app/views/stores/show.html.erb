@@ -18,7 +18,8 @@
       <span itemprop="name"><%= employee.name %></span>
       <!--<img src="janedoe.jpg" itemprop="image" />-->
 
-      <!--<span itemprop="jobTitle">Professor</span>-->
+      <% unless employee.job_title.blank? %><span class='punctuation'></span><% end %>
+      <span itemprop="jobTitle"><%= employee.job_title %></span>
       <% employee.contacts.each do |contact| %>
         <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
           <span><%= contact.postal %></span>
